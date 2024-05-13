@@ -16,6 +16,7 @@ export default function Gallery({ images }: { images: Array<ImageType> }) {
           height={900}
           src={images[currentImage].url}
           width={600}
+          priority
         />
       </div>
       <div className="hidden md:flex gap-1 items-start">
