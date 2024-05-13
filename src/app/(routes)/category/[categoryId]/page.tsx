@@ -32,12 +32,14 @@ export default async function CategoryPage({
     <div className="bg-white">
       <div className="container mb-10">
         <Billboard data={category.billboard} />
-        <Filter colors={colors} sizes={sizes} className="mb-10" />
-        <ProductList
-          products={categoryProducts}
-          title={category.name}
-          subtitle={category.description}
-        />
+        <div className="flex gap-8">
+          <Filter colors={colors} sizes={sizes} className="mb-10 max-w-64" />
+          <ProductList
+            products={categoryProducts}
+            title={category.name}
+            subtitle={category.description}
+          />
+        </div>
       </div>
     </div>
   );
