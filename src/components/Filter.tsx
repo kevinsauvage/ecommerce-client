@@ -18,6 +18,14 @@ export default function Filter({
 
   const handleSize = (size: Size) => {
     const newSearchParams = new URLSearchParams(searchParams.toString());
+
+    if (size.id === newSearchParams.get("sizeId")) {
+      newSearchParams.delete("sizeId");
+      router.push(`${pathname}?${newSearchParams.toString()}`, {
+        scroll: false,
+      });
+      return;
+    }
     newSearchParams.set("sizeId", size.id);
     router.push(`${pathname}?${newSearchParams.toString()}`, {
       scroll: false,
@@ -26,6 +34,13 @@ export default function Filter({
 
   const handleColor = (color: Color) => {
     const newSearchParams = new URLSearchParams(searchParams.toString());
+    if (color.id === newSearchParams.get("colorId")) {
+      newSearchParams.delete("colorId");
+      router.push(`${pathname}?${newSearchParams.toString()}`, {
+        scroll: false,
+      });
+      return;
+    }
     newSearchParams.set("colorId", color.id);
     router.push(`${pathname}?${newSearchParams.toString()}`, {
       scroll: false,
@@ -33,7 +48,7 @@ export default function Filter({
   };
 
   return (
-    <div className={cn("bg-white dark:bg-gray-950 py-6", className)}>
+    <div className={cn("bg-white dark:bg-gray-950", className)}>
       <h2 className="text-lg font-semibold mb-4">Filters</h2>
       <div className="grid gap-6">
         <div>
