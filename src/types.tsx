@@ -21,13 +21,16 @@ export interface Product {
   description: string;
   categoryId: string;
   isFeatured: boolean;
+  stock: number;
   images: Array<Image>;
-  variants: Array<{
-    id: string;
-    color: Color;
-    size: Size;
-    stock: number;
-  }>;
+  variants: Array<Variant>;
+}
+
+export interface Variant {
+  id: string;
+  color: Color;
+  size: Size;
+  stock: number;
 }
 
 export interface Image {
@@ -45,4 +48,11 @@ export interface Size {
   id: string;
   name: string;
   value: string;
+}
+
+export interface CartItem {
+  id: string;
+  product: Product;
+  quantity: number;
+  selectedVariant?: Variant;
 }
