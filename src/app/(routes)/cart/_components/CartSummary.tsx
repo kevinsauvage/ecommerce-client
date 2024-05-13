@@ -38,6 +38,7 @@ export default function CartSummary() {
           cartProducts: items.map((item) => ({
             id: item.product.id,
             quantity: item.quantity,
+            variantId: item.selectedVariant?.id,
           })),
         }),
         headers: {
@@ -55,7 +56,7 @@ export default function CartSummary() {
   };
 
   return (
-    <div className="border rounded-lg p-6 flex flex-col gap-4 lg:col-span-4">
+    <div className="border rounded-lg p-6 flex flex-col gap-4 lg:col-span-4 h-fit">
       <div className="flex items-center justify-between">
         <h2 className="text-lg font-medium">Order Summary</h2>
         <div className="text-2xl font-bold">
