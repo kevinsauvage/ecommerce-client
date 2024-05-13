@@ -15,7 +15,7 @@ import useCart from "@/hooks/useCart";
 import { MinusIcon, PlusIcon, TrashIcon } from "lucide-react";
 import Image from "next/image";
 
-export default function Carttable() {
+export default function CartTable() {
   const cartStore = useCart();
 
   return (
@@ -23,7 +23,7 @@ export default function Carttable() {
       <TableHeader>
         <TableRow>
           <TableHead className="w-[80px]">Image</TableHead>
-          <TableHead>Name</TableHead>
+          <TableHead>Details</TableHead>
           <TableHead className="text-right">Quantity</TableHead>
           <TableHead className="text-right">Price</TableHead>
           <TableHead />
@@ -37,8 +37,8 @@ export default function Carttable() {
             </TableCell>
           </TableRow>
         )}
-        {cartStore.items.map(({ product, quantity }) => (
-          <TableRow key={product.id}>
+        {cartStore.items.map(({ product, quantity, selectedVariant, id }) => (
+          <TableRow key={product.id + selectedVariant?.id}>
             <TableCell>
               <Image
                 alt="Product image"
@@ -48,13 +48,24 @@ export default function Carttable() {
                 width="64"
               />
             </TableCell>
-            <TableCell className="font-medium">Glimmer Lamps</TableCell>
+            <TableCell className="font-medium">
+              {product.name}
+              {selectedVariant && (
+                <span className="block text-sm font-normal text-gray-500">
+                  {selectedVariant.color.name} / {selectedVariant.size.name}
+                </span>
+              )}
+            </TableCell>
             <TableCell className="text-right">
               <div className="flex items-center justify-end gap-2">
                 <Button
                   size="icon"
                   variant="outline"
-                  onClick={() => cartStore.decreaseItem(product)}
+                  onClick={() =>
+                    quantity > 1
+                      ? cartStore.decreaseItem(id)
+                      : cartStore.removeItem(id)
+                  }
                 >
                   <MinusIcon className="h-4 w-4" />
                   <span className="sr-only">Decrease quantity</span>
@@ -62,8 +73,17 @@ export default function Carttable() {
                 <div>{quantity}</div>
                 <Button
                   size="icon"
+                  disabled={
+                    selectedVariant
+                      ? cartStore.isQuantityIncreaseDisabledForVariant(
+                          selectedVariant
+                        )
+                      : cartStore.isQuantityIncreaseDisabledForProduct(product)
+                  }
                   variant="outline"
-                  onClick={() => cartStore.addItem(product)}
+                  onClick={() => {
+                    cartStore.addItem(product, selectedVariant);
+                  }}
                 >
                   <PlusIcon className="h-4 w-4" />
                   <span className="sr-only">Increase quantity</span>
@@ -77,7 +97,7 @@ export default function Carttable() {
               <Button
                 size="icon"
                 variant="outline"
-                onClick={() => cartStore.removeItem(product)}
+                onClick={() => cartStore.removeItem(id)}
               >
                 <TrashIcon className="h-4 w-4" />
                 <span className="sr-only">Remove</span>
